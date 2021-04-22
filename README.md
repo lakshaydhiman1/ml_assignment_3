@@ -18,6 +18,21 @@ Ques 2
     ====================== Printing for L2 normalized ==========================
     Accuracies for L2 Norm [62.7438967789845, 62.7438967789845, 62.7438967789845, 62.7438967789845, 62.7438967789845, 62.7438967789845, 62.7438967789845, 62.7438967789845, 62.7438967789845, 62.7438967789845]
 
+Ques 3
+    The accuracy results while testing
+        accuracy for fold: 1 96.44444444444444
+        accuracy for fold: 2 96.65924276169265
+        accuracy for fold: 3 94.87750556792874
+        accuracy for fold: 4 96.88195991091314
+        Overall accuracy for logistic 96.21578817124475
+
+    The data when visualized using only 2 most component we can see that data is very well clustered and seperated
+
+Ques 4
+    Train time complexity for logistic regression is O(ND)
+    Space complexity for logitic regression is O(D)
+    Where D is the dimension of the input and N is the number of samples.
+
 Ques 6.
 
     I trained a neural network Model with 2 hiddden with 2,5 hidden nodes for boston price dataset the following is the result

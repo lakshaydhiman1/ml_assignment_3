@@ -1,4 +1,5 @@
 import autograd.numpy as np
+import numpy as geek
 import pandas as pd
 from autograd import grad
 from matplotlib import cm
@@ -7,6 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
 from sklearn.utils import shuffle
 import sklearn
+import matplotlib.pyplot as plt
+import matplotlib
 class LogisticRegression():
     def __init__(self, fit_intercept=True, lambda_ = 0, fun_type = 0):
 
@@ -125,20 +128,20 @@ X, y = shuffle(X, y)
 kf = KFold(n_splits=3)
 kf.get_n_splits(X)
 
-print("======================Using Equation==========================")
-i=1
-su = 0
-for train_index, test_index in kf.split(X):
-    LR = LogisticRegression(fit_intercept=True)
-    X_train, X_test = X[train_index], X[test_index]
-    y_train, y_test = y[train_index], y[test_index]
-    LR.fit(pd.DataFrame(X_train), pd.Series(y_train),5,500,0.05) 
-    y_hat = LR.predict(X_test)
-    print("accuracy for fold:",i,printAccuracy(y_test,y_hat))
-    su += printAccuracy(y_test,y_hat)
-    i+=1
-    # print("theta value",LR.theta)
-print("Overall accuracy for logistic" ,su/3)
+# print("======================Using Equation==========================")
+# i=1
+# su = 0
+# for train_index, test_index in kf.split(X):
+#     LR = LogisticRegression(fit_intercept=True)
+#     X_train, X_test = X[train_index], X[test_index]
+#     y_train, y_test = y[train_index], y[test_index]
+#     LR.fit(pd.DataFrame(X_train), pd.Series(y_train),5,500,0.05) 
+#     y_hat = LR.predict(X_test)
+#     print("accuracy for fold:",i,printAccuracy(y_test,y_hat))
+#     su += printAccuracy(y_test,y_hat)
+#     i+=1
+#     # print("theta value",LR.theta)
+# print("Overall accuracy for logistic" ,su/3)
 
 print("======================Using Autograd==========================")
 i=1
@@ -152,40 +155,58 @@ for train_index, test_index in kf.split(X):
     print("accuracy for fold:",i,printAccuracy(y_test,y_hat))
     su += printAccuracy(y_test,y_hat)
     i+=1
+    # theta_1 = LR.theta[1]
+    # theta_2 = LR.theta[2]
+    # X_ = X_test[:,0:2]
+    # y_ = y_test[:]
+    # label = [0,1,2,3,0,1,2,3]
+    # colors = ['red','green']
+    # X__ = geek.linspace(0,100,num = 100)
+    # y__ = (theta_2/theta_1) * X__
+    # fig = plt.figure(figsize=(8,8))
+    # plt.scatter(X_[:,0], X_[:,1], c = y_, cmap=matplotlib.colors.ListedColormap(colors))
+    # plt.plot(X__,y__)
+    # cb = plt.colorbar()
+    # loc = np.arange(0,max(label),max(label)/float(len(colors)))
+    # cb.set_ticks(loc)
+    # cb.set_ticklabels(colors)
+    # plt.show()
+
     # print("theta value",LR.theta)
 print("Overall accuracy for logistic" ,su/3)
 
-print("======================"+"Printing for L1 normalized"+"==========================")
-lambdas = [0.0001,0.001,0.1,1,5,10,50,100,500,1000]
-accuracy = []
-for temp in lambdas:
-    i=1
-    su = 0
-    for train_index, test_index in kf.split(X):
-        LR = LogisticRegression(fit_intercept=True,lambda_ = temp, fun_type = 1)
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = y[train_index], y[test_index]
-        LR.fit_autograd(pd.DataFrame(X_train), pd.Series(y_train),5,100,0.005) 
-        y_hat = LR.predict(X_test)
-        su += printAccuracy(y_test,y_hat)
-        i+=1
-    accuracy.append(su/3)
-print("lambdas", lambdas)
-print("Accuracies for L1 Norm",accuracy)
-print("====================== Printing for L2 normalized ==========================")
 
-accuracy_ = []
-for temp in lambdas:
-    i=1
-    su = 0
-    for train_index, test_index in kf.split(X):
-        LR = LogisticRegression(fit_intercept=True,lambda_ = temp, fun_type = 2)
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = y[train_index], y[test_index]
-        LR.fit_autograd(pd.DataFrame(X_train), pd.Series(y_train),5,100,0.001) 
-        y_hat = LR.predict(X_test)
-        su += printAccuracy(y_test,y_hat)
-        i+=1
-    accuracy_.append(su/3)
+# print("======================"+"Printing for L1 normalized"+"==========================")
+# lambdas = [0.0001,0.001,0.1,1,5,10,50,100,500,1000]
+# accuracy = []
+# for temp in lambdas:
+#     i=1
+#     su = 0
+#     for train_index, test_index in kf.split(X):
+#         LR = LogisticRegression(fit_intercept=True,lambda_ = temp, fun_type = 1)
+#         X_train, X_test = X[train_index], X[test_index]
+#         y_train, y_test = y[train_index], y[test_index]
+#         LR.fit_autograd(pd.DataFrame(X_train), pd.Series(y_train),5,100,0.005) 
+#         y_hat = LR.predict(X_test)
+#         su += printAccuracy(y_test,y_hat)
+#         i+=1
+#     accuracy.append(su/3)
+# print("lambdas", lambdas)
+# print("Accuracies for L1 Norm",accuracy)
+# print("====================== Printing for L2 normalized ==========================")
 
-print("Accuracies for L2 Norm",accuracy_)
+# accuracy_ = []
+# for temp in lambdas:
+#     i=1
+#     su = 0
+#     for train_index, test_index in kf.split(X):
+#         LR = LogisticRegression(fit_intercept=True,lambda_ = temp, fun_type = 2)
+#         X_train, X_test = X[train_index], X[test_index]
+#         y_train, y_test = y[train_index], y[test_index]
+#         LR.fit_autograd(pd.DataFrame(X_train), pd.Series(y_train),5,100,0.001) 
+#         y_hat = LR.predict(X_test)
+#         su += printAccuracy(y_test,y_hat)
+#         i+=1
+#     accuracy_.append(su/3)
+
+# print("Accuracies for L2 Norm",accuracy_)
