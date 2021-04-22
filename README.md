@@ -49,7 +49,7 @@ Ques 3
         FP [0, 0, 2, 1, 2, 1, 1, 0, 7, 2]
         FN [1, 4, 0, 4, 2, 1, 0, 1, 1, 2]
 
-    ith value is the number for ith digit is the value . We see 8 is the most confused digit and 0 is the least confused digit.
+    ith value is the number for ith digit is the value . We see (3,4,8) are the most confused digit and (0 and 7) are the least confused digit.
 
 Ques 4
     Train time complexity for logistic regression is O(ND)
