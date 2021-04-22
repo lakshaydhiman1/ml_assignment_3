@@ -6,6 +6,7 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
 import sklearn
+from sklearn import datasets
 class NeuralNetwork():
     def __init__(self, n , g, X ,y, type_,n_classes):
         self.n = n
@@ -57,6 +58,7 @@ class NeuralNetwork():
             if(self.type_ == 1):
                 a_ = np.exp(a_)
                 a_ = a_/a_.sum(axis = 0)
+                return -1* np.log(a_[y])
             else:
                 # print(np.square(a_- y))
                 return np.square(a_- y)
@@ -71,6 +73,7 @@ class NeuralNetwork():
             if(self.type_ == 1):
                 a_ = np.exp(a_)
                 a_ = a_/a_.sum(axis = 0)
+                return -1* np.log(a_[y])
             else:
                 # print(np.square(a_- y))
                 return np.square(a_- y)
@@ -88,30 +91,71 @@ class NeuralNetwork():
         # print("B", self.B)
         
 
-data = load_boston()
+# data = load_boston()
+# X = data.data
+# y = data.target
+# X = sklearn.preprocessing.normalize(X)
+# X, y = shuffle(X, y)
+# kf = KFold(n_splits=3)
+# kf.get_n_splits(X)
+# i=1
+# su = 0
+# for train_index, test_index in kf.split(X):
+#     Net = NeuralNetwork([2,5], ['relu','relu', 'relu'], X,y,0,1)
+#     X_train, X_test = X[train_index], X[test_index]
+#     y_train, y_test = y[train_index], y[test_index]
+#     n_iter = 100
+#     for i in range(n_iter):
+#         # print(i)
+#         for j in range(X_train.shape[0]):
+#             Net.backpass(X_train[j], y_train[j])
+#     y_hat = Net.forwardpass(X_test)
+#     print(y_hat.shape)
+#     print(y_test.shape)
+#     temp = 0
+#     for k in range(X_test.shape[0]):
+#         temp += np.sqrt(np.square(y_hat[k][0]-y_test[k])) 
+#     su += temp/(X_test.shape[0])
+#     print("Root Mean Square Error for a it", temp/(X_test.shape[0]))
+# print("Overall Mean square error for Network" ,su/3)
+
+def printAccuracy(y,y_hat):
+    y_ = []
+    for i in range(len(y_hat)):
+        t=0
+        for j in range(len(y_hat[0])):
+            if(y_hat[i,j]>y_hat[i,t]):
+                t = j
+        y_.append(t)
+
+    correct = 0
+    for i in range(len(y)):
+        if(y_[i] == y[i]):
+            correct+=1
+    return correct*100/len(y)
+
+
+data = datasets.load_digits()
 X = data.data
-y = data.target
 X = sklearn.preprocessing.normalize(X)
+y = data.target
 X, y = shuffle(X, y)
-kf = KFold(n_splits=3)
+kf = KFold(n_splits=4)
 kf.get_n_splits(X)
+
 i=1
 su = 0
 for train_index, test_index in kf.split(X):
-    Net = NeuralNetwork([2,5], ['relu','relu', 'relu'], X,y,0,1)
+    Net = NeuralNetwork([2], ['sigmoid','sigmoid'], X,y,1,10)
     X_train, X_test = X[train_index], X[test_index]
     y_train, y_test = y[train_index], y[test_index]
     n_iter = 100
     for i in range(n_iter):
-        # print(i)
+        print(i)
         for j in range(X_train.shape[0]):
             Net.backpass(X_train[j], y_train[j])
     y_hat = Net.forwardpass(X_test)
-    print(y_hat.shape)
-    print(y_test.shape)
-    temp = 0
-    for k in range(X_test.shape[0]):
-        temp += np.sqrt(np.square(y_hat[k][0]-y_test[k])) 
-    su += temp/(X_test.shape[0])
-    print("Root Mean Square Error for a it", temp/(X_test.shape[0]))
-print("Overall Mean square error for Network" ,su/3)
+    print(printAccuracy(y_test,y_hat))
+    su += printAccuracy(y_test,y_hat)
+    print("Accuracy for a it", printAccuracy(y_test,y_hat))
+print("Overall accuracy for logistic" ,su/4)

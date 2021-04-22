@@ -100,6 +100,10 @@ class LogisticRegression():
 
 def printAccuracy(y,y_hat):
     y_ = []
+    TP = [0 for i in range(10)]
+    TN = [0 for i in range (10)]
+    FP = [0 for i in range (10)]
+    FN = [0 for i in range (10)]
     for i in range(len(y_hat)):
         t=0
         for j in range(len(y_hat[0])):
@@ -111,6 +115,19 @@ def printAccuracy(y,y_hat):
     for i in range(len(y)):
         if(y_[i] == y[i]):
             correct+=1
+        for j in range(10):
+            if(y[i] == j and y_[i] == j):
+                TP[j] += 1
+            elif(y_[i] == j):
+                FP[j] += 1
+            elif(y[i] == j):
+                FN[j] += 1
+            else:
+                TN[j] += 1
+    print("TP",TP)
+    print("TN",TN)
+    print("FP",FP)
+    print("FN",FN)
     return correct*100/len(y)
 
 data = datasets.load_digits()
@@ -132,27 +149,27 @@ for train_index, test_index in kf.split(X):
     su += printAccuracy(y_test,y_hat)
     i+=1
 print("Overall accuracy for logistic" ,su/4)
-print(X.shape)
-pca = PCA(n_components=2)
-principalComponents = pca.fit_transform(X)
-principalDf = pd.DataFrame(data = principalComponents
-             , columns = ['principal component 1', 'principal component 2'])
-finalDf = pd.concat([principalDf, pd.Series(data = y)], axis = 1)
-fig = plt.figure(figsize = (8,8))
-ax = fig.add_subplot(1,1,1) 
-ax.set_xlabel('Principal Component 1', fontsize = 15)
-ax.set_ylabel('Principal Component 2', fontsize = 15)
-ax.set_title('2 component PCA', fontsize = 20)
-targets = [i for i in range(10)]
-colors = ['0.0','0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9']
-for target, color in zip(targets,colors):
-    indicesToKeep = finalDf[0] == target
-    ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
-               , finalDf.loc[indicesToKeep, 'principal component 2']
-               , c = color
-               , s = 50)
-ax.legend(targets)
-ax.grid()
-# print(principalComponents)
-# print(y)
-plt.show()
+# print(X.shape)
+# pca = PCA(n_components=2)
+# principalComponents = pca.fit_transform(X)
+# principalDf = pd.DataFrame(data = principalComponents
+#              , columns = ['principal component 1', 'principal component 2'])
+# finalDf = pd.concat([principalDf, pd.Series(data = y)], axis = 1)
+# fig = plt.figure(figsize = (8,8))
+# ax = fig.add_subplot(1,1,1) 
+# ax.set_xlabel('Principal Component 1', fontsize = 15)
+# ax.set_ylabel('Principal Component 2', fontsize = 15)
+# ax.set_title('2 component PCA', fontsize = 20)
+# targets = [i for i in range(10)]
+# colors = ['0.0','0.1','0.2','0.3','0.4','0.5','0.6','0.7','0.8','0.9']
+# for target, color in zip(targets,colors):
+#     indicesToKeep = finalDf[0] == target
+#     ax.scatter(finalDf.loc[indicesToKeep, 'principal component 1']
+#                , finalDf.loc[indicesToKeep, 'principal component 2']
+#                , c = color
+#                , s = 50)
+# ax.legend(targets)
+# ax.grid()
+# # print(principalComponents)
+# # print(y)
+# plt.show()
